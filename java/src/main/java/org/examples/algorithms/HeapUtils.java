@@ -1,11 +1,12 @@
 package org.examples.algorithms;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class HeapUtils {
 
     private static int parent(int i) {
-        return i>>1;
+        return ((i + 1)>>1) - 1;
     }
 
     private static int left(int i) {
@@ -58,7 +59,43 @@ public class HeapUtils {
         }
     }
 
-    public static void main(String[] args) {
+    public static<T extends Comparable<T>> T maximum(T[] input) {
+        return input[0];
+    }
+
+    public static<T extends Comparable<T>> T[] extractMaximum(T[] input) {
+        input[0] = input[input.length - 1];
+        input = Arrays.copyOf(input, input.length - 1);
+
+        maxHeapify(input, input.length - 1, 0);
+
+        return input;
+    }
+
+    public static<T extends Comparable<T>> void increaseKey(T[] input, int index, T key) throws Exception {
+        if(key.compareTo(input[index]) < 0) {
+            throw new Exception("New key is less than the old key");
+        }
+
+        input[index] = key;
+        while(index > 0 && input[parent(index)].compareTo(input[index]) < 0) {
+            int p = parent(index);
+            swap(input, p, index);
+            index = p;
+        }
+
+    }
+
+    public static<T extends Comparable<T>> T[] insert(T[] input, T key) throws Exception {
+        input = Arrays.copyOf(input, input.length + 1);
+
+        input[input.length - 1] = key;
+        increaseKey(input, input.length - 1, key);
+
+        return input;
+    }
+
+    public static void main(String[] args) throws Exception {
 
         System.out.println(1 << 1);
 
@@ -81,5 +118,20 @@ public class HeapUtils {
 
         heapSort(input2);
         System.out.println(Arrays.toString(input2));
+
+        // extract maximum
+        buildMaxHeap(input2);
+        int maximum = maximum(input2);
+        input2 = extractMaximum(input2);
+        System.out.println(String.format("maximum = %d, array = %s", maximum, Arrays.toString(input2)));
+
+        //increase key
+        increaseKey(input2, 3, 20);
+        System.out.println(Arrays.toString(input2));
+
+        // insert key
+        input2 = insert(input2, 26);
+        System.out.println(Arrays.toString(input2));
+
     }
 }
