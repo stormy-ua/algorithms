@@ -46,10 +46,10 @@ public class StockMaximize {
         return profit;
     }
 
-    public static void main2(String[] args) {
-        //int[] prices = { 1, 3, 1, 2 };
+    public static void main(String[] args) {
+        int[] prices = { 1, 3, 1, 2 };
         //int[] prices = { 1, 2, 100 };
-        int[] prices = { 5, 3, 2 };
+        //int[] prices = { 5, 3, 2 };
         int N = prices.length;
 
         int[] maxPriceLookup = buildMaxPriceLookup(prices);
